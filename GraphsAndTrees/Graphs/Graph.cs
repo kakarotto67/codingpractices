@@ -215,6 +215,23 @@ namespace Graphs
             }).FirstOrDefault();
       }
 
+      public Node<T> BreadthFirstSearch(int searchedNodeIndex)
+      {
+         return BreadthFirstTraversalImplementation(Nodes[0],
+            (result, nextNode) =>
+            {
+               if (nextNode.Index == searchedNodeIndex)
+               {
+                  result.Add(nextNode);
+                  // To stop when searched node is found
+                  return true;
+               }
+
+               result = null;
+               return false;
+            }).FirstOrDefault();
+      }
+
       public ReadOnlyCollection<Node<T>> BreadthFirstTraversal()
       {
          return BreadthFirstTraversalImplementation(Nodes[0],
