@@ -15,6 +15,22 @@ namespace Graphs
       public ReadOnlyCollection<Node<T>> Neighbors => Edges.Select(x => x.To)
          .Distinct(new NodeEqualityComparer<T>()).ToList().AsReadOnly();
 
+      public Node()
+      {
+      }
+
+      public Node(Node<T> node)
+      {
+         if (node != null)
+         {
+            Index = node.Index;
+            Data = node.Data;
+
+            // Copy edges
+            _edges = node.Edges?.ToList() ?? null;
+         }
+      }
+
       public void AddNeighbor(Node<T> node, int? weight = null)
       {
          var edge = GetEdgeToNode(node, weight);

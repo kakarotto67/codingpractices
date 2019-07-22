@@ -54,6 +54,16 @@ namespace GraphsDijkstraShortestPath
          var dfsByIndex = graph.DepthFirstSearch(3);
          Console.WriteLine($"\nNode found by index (DFS): {dfsByIndex}");
 
+         Console.WriteLine("\nGraph nodes (BFS):");
+         var bfsTraversal = graph.BreadthFirstTraversal();
+         foreach (var graphNode in bfsTraversal)
+         {
+            Console.WriteLine(graphNode);
+         }
+
+         var bfsByData = graph.BreadthFirstSearch(City.Ternopil);
+         Console.WriteLine($"\nNode found by data (BFS): {bfsByData}");
+
          //foreach (var lvivNeighbor in lviv.Neighbors)
          //{
          //   Console.WriteLine(lvivNeighbor);

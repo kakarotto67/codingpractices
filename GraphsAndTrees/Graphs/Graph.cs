@@ -98,6 +98,9 @@ namespace Graphs
          }
       }
 
+      /// <summary>
+      /// Gets all edges in graph using DFS traversal.
+      /// </summary>
       public ReadOnlyCollection<Edge<T>> GetEdges()
       {
          var edges = new List<Edge<T>>();
@@ -193,6 +196,70 @@ namespace Graphs
                DepthFirstTraversalRecursion(neighborNode, visitedNodes, result);
             }
          }
+      }
+
+      public Node<T> BreadthFirstSearch(T searchedNodeData)
+      {
+         return BreadthFirstTraversalImplementation(Nodes[0],
+            (result, nextNode) =>
+            {
+               if (nextNode.Data.Equals(searchedNodeData))
+               {
+                  result.Add(nextNode);
+                  // To stop when searched node is found
+                  return true;
+               }
+
+               result = null;
+               return false;
+            }).FirstOrDefault();
+      }
+
+      public ReadOnlyCollection<Node<T>> BreadthFirstTraversal()
+      {
+         return BreadthFirstTraversalImplementation(Nodes[0],
+            (result, nextNode) =>
+            {
+               result.Add(nextNode);
+               // To check every node
+               return false;
+            })
+            .AsReadOnly();
+      }
+
+      private List<Node<T>> BreadthFirstTraversalImplementation(Node<T> node, Func<List<Node<T>>, Node<T>, bool> func)
+      {
+         // Track visited nodes
+         var isVisited = new bool[Nodes.Count];
+         isVisited[node.Index] = true;
+
+         var result = new List<Node<T>>();
+         var queue = new Queue<Node<T>>();
+
+         // Add node to the end of queue
+         queue.Enqueue(node);
+
+         while (queue.Count > 0)
+         {
+            // Get node from queue and push into result
+            var nextNode = queue.Dequeue();
+            if (func(result, nextNode))
+            {
+               return result;
+            }
+
+            // Add those node's neighbors to the queue that weren't visited yet
+            foreach (var neighbor in nextNode.Neighbors)
+            {
+               if (!isVisited[neighbor.Index])
+               {
+                  isVisited[neighbor.Index] = true;
+                  queue.Enqueue(neighbor);
+               }
+            }
+         }
+
+         return result;
       }
 
       public bool ContainsEdge(Node<T> from, Node<T> to)
