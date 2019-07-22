@@ -84,6 +84,11 @@ namespace Graphs
 
          if (!_isDirected)
          {
+            if (ContainsEdge(to, from))
+            {
+               throw new ArgumentNullException("Edge between <from> and <to> already exists!");
+            }
+
             to.AddNeighbor(from, weight);
          }
       }
@@ -112,6 +117,7 @@ namespace Graphs
          return edges.AsReadOnly();
       }
 
+      // TODO: Move DFS to common method as was done for BFS
       public Node<T> DepthFirstSearch(T searchedNodeData)
       {
          return DepthFirstSearchRecursion(Nodes[0], new bool[Nodes.Count], searchedNodeData);
