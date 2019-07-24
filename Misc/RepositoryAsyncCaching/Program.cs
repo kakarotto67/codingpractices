@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RepositoryAsyncCaching.DecoratedRepository;
 using RepositoryAsyncCaching.ThirdPartyRepository;
-using StackExchange.Redis;
 using System;
 using System.Threading.Tasks;
 

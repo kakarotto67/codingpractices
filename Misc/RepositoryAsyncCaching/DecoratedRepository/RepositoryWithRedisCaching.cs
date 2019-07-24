@@ -29,7 +29,10 @@ namespace RepositoryAsyncCaching.DecoratedRepository
             var result = base.Get(key);
 
             Console.WriteLine("Value saved into cache");
-            redisCache.SetString(key, result.ToString());
+            redisCache.SetString(key, result.ToString(), new DistributedCacheEntryOptions
+            {
+               AbsoluteExpirationRelativeToNow = new TimeSpan(0, 1, 0)
+            });
 
             return result;
          }
