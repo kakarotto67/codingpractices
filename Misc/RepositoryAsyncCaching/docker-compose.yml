@@ -1,0 +1,11 @@
+version: "3"
+  
+services:
+  database:
+    image: "redis"
+    container_name: "redis-master"
+    ports:
+      - "5155:6379"
+    #environment: 
+      #- "ACCEPT_EULA=Y"
+      #- "SA_PASSWORD=ExtraNano%321"

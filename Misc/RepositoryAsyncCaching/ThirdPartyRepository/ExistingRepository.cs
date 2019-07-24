@@ -3,7 +3,7 @@
 namespace RepositoryAsyncCaching.ThirdPartyRepository
 {
    // Cannot be modified
-   public class ExistingRepository : IRepository<int>
+   internal class ExistingRepository : IRepository<int>
    {
       public int Get(string key)
       {

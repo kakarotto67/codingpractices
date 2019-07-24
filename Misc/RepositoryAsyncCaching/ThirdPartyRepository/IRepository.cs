@@ -2,7 +2,7 @@
 namespace RepositoryAsyncCaching.ThirdPartyRepository
 {
    // Cannot be modified
-   public interface IRepository<T>
+   internal interface IRepository<T>
    {
       T Get(string key);
    }

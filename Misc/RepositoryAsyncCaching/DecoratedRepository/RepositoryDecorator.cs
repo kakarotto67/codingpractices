@@ -2,7 +2,7 @@
 
 namespace RepositoryAsyncCaching.DecoratedRepository
 {
-   public abstract class RepositoryDecorator : IRepository<int>
+   internal abstract class RepositoryDecorator : IRepository<int>
    {
       protected IRepository<int> repository;
 

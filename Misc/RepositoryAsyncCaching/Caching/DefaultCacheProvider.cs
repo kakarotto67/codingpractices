@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace RepositoryAsyncCaching.Caching
 {
-   public class DefaultCacheProvider : ICacheProvider<int>
+   internal class DefaultCacheProvider : ICacheProvider<int>
    {
       private Dictionary<string, int> cacheStorage = new Dictionary<string, int>();
 

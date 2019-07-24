@@ -1,16 +1,16 @@
-﻿using RepositoryAsyncCaching.Caching;
+﻿using Microsoft.Extensions.Caching.Distributed;
 using System;
 
 namespace RepositoryAsyncCaching.DecoratedRepository
 {
-   internal class RepositoryWithCaching : RepositoryDecorator
+   internal class RepositoryWithRedisCaching : RepositoryDecorator
    {
-      private readonly ICacheProvider<int> cacheProvider;
+      private readonly IDistributedCache redisCache;
       private readonly object lockObject = new object();
 
-      public RepositoryWithCaching(ICacheProvider<int> cacheProvider)
+      public RepositoryWithRedisCaching(IDistributedCache redisCache)
       {
-         this.cacheProvider = cacheProvider;
+         this.redisCache = redisCache;
       }
 
       // Decorated Get with caching logic
@@ -18,18 +18,18 @@ namespace RepositoryAsyncCaching.DecoratedRepository
       {
          lock (lockObject)
          {
-            var cached = cacheProvider.Get(key);
+            var cached = redisCache.GetString(key);
 
-            if (cached != Int32.MinValue)
+            if (!String.IsNullOrEmpty(cached) && Int32.TryParse(cached, out var cachedResult))
             {
                Console.WriteLine("Cached value returned");
-               return cached;
+               return cachedResult;
             }
 
             var result = base.Get(key);
 
             Console.WriteLine("Value saved into cache");
-            cacheProvider.Set(key, result);
+            redisCache.SetString(key, result.ToString());
 
             return result;
          }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using RepositoryAsyncCaching.Caching;
 using RepositoryAsyncCaching.DecoratedRepository;
 using RepositoryAsyncCaching.ThirdPartyRepository;
+using StackExchange.Redis;
 using System;
 using System.Threading.Tasks;
 
@@ -9,16 +9,15 @@ namespace RepositoryAsyncCaching
 {
    class Program
    {
+      private static readonly ServiceCollection services = new ServiceCollection();
+
       static void Main()
       {
-         // Setup DI
-         var services = new ServiceCollection()
-            .AddSingleton<ICacheProvider<int>, DefaultCacheProvider>()
-            .AddSingleton<IRepository<int>, RepositoryWithCaching>();
-         var serviceProvider = services.BuildServiceProvider();
+         ConfigureServices();
 
+         var serviceProvider = services.BuildServiceProvider();
          var repo = serviceProvider.GetService<IRepository<int>>();
-         ((RepositoryWithCaching)repo).SetRepository(new ExistingRepository());
+         ((RepositoryWithRedisCaching)repo).SetRepository(new ExistingRepository());
 
          // Not cached
          for (int i = -5; i <= 5; i++)
@@ -54,6 +53,36 @@ namespace RepositoryAsyncCaching
          Console.WriteLine($"Async test 2 result: {asyncTest2Result} milliseconds");
 
          Console.ReadKey();
+      }
+
+      private static void ConfigureServices()
+      {
+         //services.AddSingleton<ICacheProvider<int>, DefaultCacheProvider>();
+         services.AddSingleton<IRepository<int>, RepositoryWithRedisCaching>();
+
+         // Setup Redis Cache
+         //ConfigurationOptions config = new ConfigurationOptions
+         //{
+         //   EndPoints =
+         //   {
+         //      { "redis-master", 5155 }
+         //   },
+         //   KeepAlive = 180,
+         //   DefaultVersion = new Version(2, 8, 8),
+         //   Password = "changeme"
+         //};
+
+         // To be able to connect to redis server run its docker container first:
+         // Docker command:
+         // docker run --name redis-master -d -p 5155:6379 redis
+         // Docker compose command:
+         // docker-compose -f "docker-compose.yml" up
+         services.AddDistributedRedisCache(options =>
+         {
+            options.Configuration = "127.0.0.1:5155";
+            options.InstanceName = "redis-master";
+            //options.ConfigurationOptions = config;
+         });
       }
 
       /// <summary>
