@@ -1,0 +1,8 @@
+version: "3"
+  
+services:
+  database:
+    image: "rabbitmq"
+    container_name: "rabbitmq-master"
+    ports:
+      - "5672:5672"
