@@ -2,15 +2,18 @@
 using RepositoryAsyncCaching.DecoratedRepository;
 using RepositoryAsyncCaching.ThirdPartyRepository;
 using System;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+
+[assembly:InternalsVisibleTo("RepositoryAsyncCachingTests")]
 
 namespace RepositoryAsyncCaching
 {
-   class Program
+   internal class Program
    {
       private static readonly ServiceCollection services = new ServiceCollection();
 
-      static void Main()
+      private static void Main()
       {
          ConfigureServices();
 

@@ -7,6 +7,8 @@ namespace RepositoryAsyncCaching.Caching
    {
       private Dictionary<string, int> cacheStorage = new Dictionary<string, int>();
 
+      public int CacheSize => cacheStorage.Count;
+
       public int Get(string key)
       {
          if (cacheStorage.TryGetValue(key, out var valueFromCache))
