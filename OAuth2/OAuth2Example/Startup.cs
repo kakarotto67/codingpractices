@@ -78,6 +78,17 @@ namespace OAuth2Example
 
                facebookOptions.AppId = facebookAuthSection["ClientId"];
                facebookOptions.AppSecret = facebookAuthSection["ClientSecret"];
+            })
+            // Configure Twitter OAuth2 Authentication
+            .AddTwitter(twitterOptions =>
+            {
+               var twitterAuthSection =
+                 env.IsDevelopment() ?
+                 Configuration.GetSection("OAuth2ExampleSecrets:Authentication:Twitter")
+                 : Configuration.GetSection("Authentication:Twitter");
+
+               twitterOptions.ConsumerKey = twitterAuthSection["ClientId"];
+               twitterOptions.ConsumerSecret = twitterAuthSection["ClientSecret"];
             });
 
          services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
