@@ -67,6 +67,17 @@ namespace OAuth2Example
 
                microsoftOptions.ClientId = msAuthSection["ClientId"];
                microsoftOptions.ClientSecret = msAuthSection["ClientSecret"];
+            })
+            // Configure Facebook OAuth2 Authentication
+            .AddFacebook(facebookOptions =>
+            {
+               var facebookAuthSection =
+                 env.IsDevelopment() ?
+                 Configuration.GetSection("OAuth2ExampleSecrets:Authentication:Facebook")
+                 : Configuration.GetSection("Authentication:Facebook");
+
+               facebookOptions.AppId = facebookAuthSection["ClientId"];
+               facebookOptions.AppSecret = facebookAuthSection["ClientSecret"];
             });
 
          services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
