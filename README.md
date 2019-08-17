@@ -60,7 +60,7 @@ Contains generic small projects related to Algorithms, Patterns, etc.
 - Reverse linked list
 
 #### Solution
-- Use while loop to update references between nodes to reverse a list [implementation] (https://github.com/kakarotto67/codingpractices/tree/master/ArraysAndLists/LinkedList)
+- Use while loop to update references between nodes to reverse a list [implementation](https://github.com/kakarotto67/codingpractices/tree/master/ArraysAndLists/LinkedList)
 
 #### Complexity
 - Reverse complexity is O(n)
