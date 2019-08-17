@@ -27,7 +27,7 @@ Contains generic small projects related to Algorithms, Patterns, etc.
 #### Complexity
 - Search complexity is O(log n) for balanced tree
 
-### 3. Matchin Parenthesis Problem 
+### 3. Matching Parenthesis Problem 
 #### Problems to solve
 - Check if all opening or left hand parenthesis have a closing or right hand parenthesis
 
@@ -60,20 +60,20 @@ Contains generic small projects related to Algorithms, Patterns, etc.
 - Reverse linked list
 
 #### Solution
-- Use while loop to update references between nodes to reverse a list [implementation](https://github.com/kakarotto67/codingpractices/tree/master/ArraysAndLists/LinkedList)
+- Use while loop to update references between nodes to reverse a list ([implementation](https://github.com/kakarotto67/codingpractices/tree/master/ArraysAndLists/LinkedList))
 
 #### Complexity
 - Reverse complexity is O(n)
 
 ### 7. Sorting Algorithms
 #### Problems to solve
-- Sort arras, list and other collections
+- Sort arrays, list and other collections
 
 #### Solution
 - Selection sort
 - Insertion Sort
 - Bubble Sort
-- Quick Sort
+- Quick Sort (divide-and-conquer with recursion)
 
 #### Complexity
 - Quick Sort complexity is O(n * log n), for others - O(n2)
