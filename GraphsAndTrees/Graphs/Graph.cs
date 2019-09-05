@@ -117,96 +117,101 @@ namespace Graphs
          return edges.AsReadOnly();
       }
 
-      // TODO: Move DFS to common method as was done for BFS
       public Node<T> DepthFirstSearch(T searchedNodeData)
       {
-         return DepthFirstSearchRecursion(Nodes[0], new bool[Nodes.Count], searchedNodeData);
-      }
-
-      private Node<T> DepthFirstSearchRecursion(Node<T> node, bool[] visitedNodes, T searchedNodeData)
-      {
-         if (node.Data.Equals(searchedNodeData))
-         {
-            return node;
-         }
-
-         // Keep array of visited nodes to process each node only once
-         visitedNodes[node.Index] = true;
-
-         if (node.Neighbors != null && node.Neighbors.Any())
-         {
-            foreach (var neighborNode in node.Neighbors)
+         var result = new List<Node<T>>();
+         DFSImplementation(Nodes[0], new bool[Nodes.Count], result,
+            (nextNode) =>
             {
-               if (!visitedNodes[neighborNode.Index])
+               if (nextNode.Data.Equals(searchedNodeData))
                {
-                  return DepthFirstSearchRecursion(neighborNode, visitedNodes, searchedNodeData);
+                  result.Add(nextNode);
+                  // To stop when searched node is found
+                  return true;
                }
-            }
-         }
 
-         return null;
+               // Move to next node
+               return false;
+            });
+
+         return result?.FirstOrDefault();
       }
 
       public Node<T> DepthFirstSearch(int searchedNodeIndex)
       {
-         return DepthFirstSearchRecursion(Nodes[0], new bool[Nodes.Count], searchedNodeIndex);
-      }
-
-      private Node<T> DepthFirstSearchRecursion(Node<T> node, bool[] visitedNodes, int searchedNodeIndex)
-      {
-         if (node.Index == searchedNodeIndex)
-         {
-            return node;
-         }
-
-         // Keep array of visited nodes to process each node only once
-         visitedNodes[node.Index] = true;
-
-         if (node.Neighbors != null && node.Neighbors.Any())
-         {
-            foreach (var neighborNode in node.Neighbors)
+         var result = new List<Node<T>>();
+         DFSImplementation(Nodes[0], new bool[Nodes.Count], result,
+            (nextNode) =>
             {
-               if (!visitedNodes[neighborNode.Index])
+               if (nextNode.Index == searchedNodeIndex)
                {
-                  return DepthFirstSearchRecursion(neighborNode, visitedNodes, searchedNodeIndex);
+                  result.Add(nextNode);
+                  // To stop when searched node is found
+                  return true;
                }
-            }
-         }
 
-         return null;
+               // Move to next node
+               return false;
+            });
+
+         return result?.FirstOrDefault();
       }
 
       public ReadOnlyCollection<Node<T>> DepthFirstTraversal()
       {
          var result = new List<Node<T>>();
-         DepthFirstTraversalRecursion(Nodes[0], new bool[Nodes.Count], result);
-         return result.AsReadOnly();
+         DFSImplementation(Nodes[0], new bool[Nodes.Count], result,
+            (nextNode) =>
+            {
+               result.Add(nextNode);
+
+               // Move to next node
+               return false;
+            });
+         return result?.AsReadOnly();
       }
 
-      private void DepthFirstTraversalRecursion(Node<T> node, bool[] visitedNodes,
-         List<Node<T>> result)
+      /// <summary>
+      /// DFS algorithm in single place.
+      /// </summary>
+      /// <param name="node">The node to start from.</param>
+      /// <param name="visitedNodes">List of visited nodes.</param>
+      /// <param name="result">List with traversed nodes.</param>
+      /// <param name="func">Usually, this func supposed to add next node into a list.
+      /// It should return false to move to next node. Usually, true is returned if we search for particular node
+      /// and there is no reason to move on.</param>
+      /// <returns>Returnst list of all found nodes in the graph or stops when needed node is found.</returns>
+      private void DFSImplementation(Node<T> node, bool[] visitedNodes, List<Node<T>> result,
+         Func<Node<T>, bool> func)
       {
-         // Add found node to the result list
-         // Start from the initially passed node
-         result.Add(node);
+         if (node == null || visitedNodes == null || func == null)
+         {
+            return;
+         }
+
+         if (func(node))
+         {
+            return;
+         }
 
          // Keep array of visited nodes to process each node only once
          visitedNodes[node.Index] = true;
 
-         foreach(var neighborNode in node.Neighbors)
+         if (node.Neighbors != null && node.Neighbors.Any())
          {
-            // If this node isn't visited yet - run DFS recursively for it
-            // and then go deeper into its neighbors
-            if (!visitedNodes[neighborNode.Index])
+            foreach (var neighborNode in node.Neighbors)
             {
-               DepthFirstTraversalRecursion(neighborNode, visitedNodes, result);
+               if (!visitedNodes[neighborNode.Index])
+               {
+                  DFSImplementation(neighborNode, visitedNodes, result, func);
+               }
             }
          }
       }
 
       public Node<T> BreadthFirstSearch(T searchedNodeData)
       {
-         return BreadthFirstTraversalImplementation(Nodes[0],
+         return BFSImplementation(Nodes[0],
             (result, nextNode) =>
             {
                if (nextNode.Data.Equals(searchedNodeData))
@@ -216,6 +221,7 @@ namespace Graphs
                   return true;
                }
 
+               // Move to next node
                result = null;
                return false;
             }).FirstOrDefault();
@@ -223,7 +229,7 @@ namespace Graphs
 
       public Node<T> BreadthFirstSearch(int searchedNodeIndex)
       {
-         return BreadthFirstTraversalImplementation(Nodes[0],
+         return BFSImplementation(Nodes[0],
             (result, nextNode) =>
             {
                if (nextNode.Index == searchedNodeIndex)
@@ -233,6 +239,7 @@ namespace Graphs
                   return true;
                }
 
+               // Move to next node
                result = null;
                return false;
             }).FirstOrDefault();
@@ -240,18 +247,32 @@ namespace Graphs
 
       public ReadOnlyCollection<Node<T>> BreadthFirstTraversal()
       {
-         return BreadthFirstTraversalImplementation(Nodes[0],
+         return BFSImplementation(Nodes[0],
             (result, nextNode) =>
             {
                result.Add(nextNode);
-               // To check every node
+
+               // Move to next node
                return false;
             })
             .AsReadOnly();
       }
 
-      private List<Node<T>> BreadthFirstTraversalImplementation(Node<T> node, Func<List<Node<T>>, Node<T>, bool> func)
+      /// <summary>
+      /// BFS algorithm in single place.
+      /// </summary>
+      /// <param name="node">The node to start from.</param>
+      /// <param name="func">Usually, this func supposed to add next node into a list.
+      /// It should return false to move to next node. Usually, true is returned if we search for particular node
+      /// and there is no reason to move on.</param>
+      /// <returns>Returnst list of all found nodes in the graph or stops when needed node is found.</returns>
+      private List<Node<T>> BFSImplementation(Node<T> node, Func<List<Node<T>>, Node<T>, bool> func)
       {
+         if(node == null || func == null)
+         {
+            return null;
+         }
+
          // Track visited nodes
          var isVisited = new bool[Nodes.Count];
          isVisited[node.Index] = true;
