@@ -29,6 +29,7 @@ namespace GraphsDijkstraShortestPath
          graph.AddEdge(ternopil, kyiv, 420);
          graph.AddEdge(ternopil, odessa, 660);
          graph.AddEdge(ivanoFrankivsk, uzhgorod, 290);
+         graph.AddEdge(ivanoFrankivsk, odessa, 735);
          graph.AddEdge(lviv, uzhgorod, 260);
 
          // Throws exception since nodes don't exist in the graph
@@ -71,6 +72,16 @@ namespace GraphsDijkstraShortestPath
          //{
          //   Console.WriteLine(lvivNeighbor);
          //}
+
+         // Test shortest path method (Dijkstra algorithm)
+         var from = uzhgorod;
+         var to = kyiv;
+         Console.WriteLine($"\nShortest path from {from} to {to}");
+         var shortestPath = graph.GetShortestPath(from, to);
+         foreach(var edge in shortestPath)
+         {
+            Console.WriteLine(edge);
+         }
 
          Console.ReadKey();
       }

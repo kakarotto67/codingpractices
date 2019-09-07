@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Priority_Queue;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -11,6 +12,8 @@ namespace Graphs
       private readonly bool _isWeighted = false;
 
       public List<Node<T>> Nodes { get; set; } = new List<Node<T>>();
+
+      public int NodesCount => Nodes.Count;
 
       public Graph()
       {
@@ -115,6 +118,92 @@ namespace Graphs
          }
 
          return edges.AsReadOnly();
+      }
+
+      public List<Edge<T>> GetShortestPath(Node<T> source, Node<T> target)
+      {
+         return GetShortestPathDijkstra(source, target);
+      }
+
+      private List<Edge<T>> GetShortestPathDijkstra(Node<T> source, Node<T> target)
+      {
+         if(source == null || target == null)
+         {
+            return null;
+         }
+
+         var previous = new int[NodesCount];
+         Fill(previous, -1);
+
+         var distances = new int[NodesCount];
+         Fill(distances, int.MaxValue);
+
+         distances[source.Index] = 0;
+
+         // Create priority queue of all graph nodes
+         // with priority for each node being initialized respective value
+         // from distances array (max value initially)
+         var nodesQueue = new SimplePriorityQueue<Node<T>>();
+         for (var i = 0; i < NodesCount; i++)
+         {
+            nodesQueue.Enqueue(Nodes[i], distances[i]);
+         }
+
+         while(nodesQueue.Count != 0)
+         {
+            var node = nodesQueue.Dequeue();
+
+            for (var i = 0; i < node.Neighbors.Count; i++)
+            {
+               var neighbor = node.Neighbors[i];
+
+               var weight = i < node.Edges.Count ? node.Edges[i].Weight ?? 0 : 0;
+               var weightTotal = distances[node.Index] + weight;
+
+               if (distances[neighbor.Index] > weightTotal)
+               {
+                  distances[neighbor.Index] = weightTotal;
+                  previous[neighbor.Index] = node.Index;
+
+                  nodesQueue.UpdatePriority(neighbor, distances[neighbor.Index]);
+               }
+            }
+         }
+
+         var indices = new List<Int32>();
+         var index = target.Index;
+
+         while (index >= 0)
+         {
+            indices.Add(index);
+            index = previous[index];
+         }
+
+         indices.Reverse();
+
+         var result = new List<Edge<T>>();
+
+         for (int i = 0; i < indices.Count - 1; i++)
+         {
+            var edge = this[indices[i], indices[i + 1]];
+            result.Add(edge);
+         }
+
+         return result;
+      }
+
+      // Auxiliary method to fill the whole array with specified value
+      private void Fill<Y>(Y[] array, Y value)
+      {
+         if(array == null || array.Length <= 0)
+         {
+            return;
+         }
+
+         for (int i = 0; i < array.Length; i++)
+         {
+            array[i] = value;
+         }
       }
 
       public Node<T> DepthFirstSearch(T searchedNodeData)
@@ -329,7 +418,7 @@ namespace Graphs
 
       private int GetIndexOfNewNode()
       {
-         return Nodes.Count;
+         return NodesCount;
       }
    }
 }
