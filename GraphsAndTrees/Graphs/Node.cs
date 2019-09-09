@@ -12,6 +12,8 @@ namespace Graphs
       public int Index { get; set; }
       public T Data { get; set; }
       public ReadOnlyCollection<Edge<T>> Edges => _edges.AsReadOnly();
+
+      // TODO: Move into method or eliminate if not needed
       public ReadOnlyCollection<Node<T>> Neighbors => Edges.Select(x => x.To)
          .Distinct(new NodeEqualityComparer<T>()).ToList().AsReadOnly();
 
@@ -45,9 +47,19 @@ namespace Graphs
          _edges.RemoveAll(x => x.To == node);
       }
 
+      public Edge<T> GetEdgeToNeighbor(Node<T> neighborNode)
+      {
+         if(neighborNode == null || Edges == null)
+         {
+            return null;
+         }
+
+         return Edges.Where(x => x.To.Equals(neighborNode)).FirstOrDefault();
+      }
+
       public bool Equals(Node<T> other)
       {
-         return Index == other.Index && Data.Equals(other.Data);
+         return other != null && Index == other.Index && Data.Equals(other.Data);
       }
 
       public override string ToString()
@@ -70,7 +82,7 @@ namespace Graphs
    {
       public bool Equals(Node<T> x, Node<T> y)
       {
-         return x.Index == y.Index && x.Data.Equals(y.Data);
+         return x.Equals(y);
       }
 
       public int GetHashCode(Node<T> obj)

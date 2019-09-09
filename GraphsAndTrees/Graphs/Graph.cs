@@ -1,4 +1,5 @@
-﻿using Priority_Queue;
+﻿using Graphs.Helpers;
+using Priority_Queue;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -122,6 +123,12 @@ namespace Graphs
 
       public List<Edge<T>> GetShortestPath(Node<T> source, Node<T> target)
       {
+         // TODO: Another class have to be extracted
+         if (!_isWeighted)
+         {
+            throw new NotSupportedException();
+         }
+
          return GetShortestPathDijkstra(source, target);
       }
 
@@ -132,78 +139,109 @@ namespace Graphs
             return null;
          }
 
+         // previous array initialized with -1 for each node [-1, -1, -1, ...]
          var previous = new int[NodesCount];
-         Fill(previous, -1);
+         ArrayHelpers.Fill(previous, -1);
 
+         // distances array intialized with max for each node [max, max, max, ...]
          var distances = new int[NodesCount];
-         Fill(distances, int.MaxValue);
+         ArrayHelpers.Fill(distances, int.MaxValue);
 
+         // Set distances for source's index to 0 since its the beginning of the path
          distances[source.Index] = 0;
 
          // Create priority queue of all graph nodes
-         // with priority for each node being initialized respective value
+         // with priority for each node being initialized with respective value
          // from distances array (max value initially)
+         // node - max, node - max, ..., source node - 0, ..., node - max, ...
          var nodesQueue = new SimplePriorityQueue<Node<T>>();
          for (var i = 0; i < NodesCount; i++)
          {
             nodesQueue.Enqueue(Nodes[i], distances[i]);
          }
 
+         // Dequeue nodes from the queue until queue is empty
          while(nodesQueue.Count != 0)
          {
-            var node = nodesQueue.Dequeue();
+            // Since it is a priority queue, nodes is dequeued from highest priority first
+            // Highest priority - is the lowest value in the priority queue
+            // Since we set source's node priority to 0 - it will be dequeued first
+            var dequeuedNode = nodesQueue.Dequeue();
 
-            for (var i = 0; i < node.Neighbors.Count; i++)
+            if(dequeuedNode.Neighbors == null)
             {
-               var neighbor = node.Neighbors[i];
+               continue;
+            }
 
-               var weight = i < node.Edges.Count ? node.Edges[i].Weight ?? 0 : 0;
-               var weightTotal = distances[node.Index] + weight;
+            // Check all neighbors of current node
+            for (var i = 0; i < dequeuedNode.Neighbors.Count; i++)
+            {
+               // Get current neighbor
+               var neighbor = dequeuedNode.Neighbors[i];
 
+               // Get edge to current neighbor
+               var edgeToNeighbor = dequeuedNode.GetEdgeToNeighbor(neighbor);
+
+               // Get weight to current neightbor
+               var weightToNeighbor = edgeToNeighbor?.Weight ?? 0;
+
+               // Get total weight - value from distances array + weight to neighbor node
+               // Will be max + weight to neihbor for non source node
+               // Will be 0 + weight to neighbor for source node
+               var weightTotal = distances[dequeuedNode.Index] + weightToNeighbor;
+
+               // If distance to current neighbor is greater than weight total, then:
+               // - set it to weight total
+               // - update previous array's element to current dequeued node's index
+               // - update priority of current neighbor to be weight total
                if (distances[neighbor.Index] > weightTotal)
                {
+                  // Distance will be set to the actual distance to the neighbor node from the source node
                   distances[neighbor.Index] = weightTotal;
-                  previous[neighbor.Index] = node.Index;
 
+                  // Index of dequeued node is set into previous array, so later the shortest path can be calculated
+                  previous[neighbor.Index] = dequeuedNode.Index;
+
+                  // Priority will be updated to the actual distance to the neighbor node from the source node
                   nodesQueue.UpdatePriority(neighbor, distances[neighbor.Index]);
                }
             }
          }
 
+         // Form list of indices
          var indices = new List<Int32>();
+
+         // Initialize first index to target's index
          var index = target.Index;
 
          while (index >= 0)
          {
+            // Add index into list
+            // Initially, target's index will be added
             indices.Add(index);
+
+            // Update index to value from previous array
             index = previous[index];
          }
 
+         // Reverse the list to go from source to target at the end
          indices.Reverse();
 
+         // Form the result list using indicies
          var result = new List<Edge<T>>();
 
          for (int i = 0; i < indices.Count - 1; i++)
          {
-            var edge = this[indices[i], indices[i + 1]];
+            // Get edge using indexes
+            var indexFrom = indices[i];
+            var indexTo = indices[i + 1];
+            var edge = this[indexFrom, indexTo];
+
+            // Add edge into result list
             result.Add(edge);
          }
 
          return result;
-      }
-
-      // Auxiliary method to fill the whole array with specified value
-      private void Fill<Y>(Y[] array, Y value)
-      {
-         if(array == null || array.Length <= 0)
-         {
-            return;
-         }
-
-         for (int i = 0; i < array.Length; i++)
-         {
-            array[i] = value;
-         }
       }
 
       public Node<T> DepthFirstSearch(T searchedNodeData)
