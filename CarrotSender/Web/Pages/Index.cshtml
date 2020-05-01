@@ -1,0 +1,88 @@
+﻿@page
+@model Web.Pages.IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+
+    @if (!Model.IsBusReady)
+    {
+        <div class="alert alert-danger" role="alert">
+            Connection to message bus was not established!<br />
+            Please, check if message bus is run and all settings are set correctly in appsettings.json.
+        </div>
+    }
+    else
+    {
+        @if (TempData[Web.Pages.IndexModel.CarrotSentMessageKey] is string message)
+        {
+            <script type="text/javascript">
+                $(function () {
+                    hideCarrotSentAlert();
+                });
+
+                function hideCarrotSentAlert() {
+                    let alertContainer = $("#carrot-sent__alert-container");
+                    if (alertContainer.is(":visible")) {
+                        setTimeout(function () {
+                            alertContainer.fadeOut();
+                        }, 3000);
+                    }
+                }
+            </script>
+
+            <div id="carrot-sent__alert-container" class="alert alert-success" role="alert">
+                @message
+            </div>
+        }
+
+        <div class="alert alert-primary" role="alert">
+            Send some carrots for the rabbit!
+        </div>
+        @using (Html.BeginForm(FormMethod.Post))
+        {
+            @Html.ValidationSummary(true)
+
+            <div class="form-group">
+                <div>
+                    @Html.LabelFor(m => m.MessageQueueName)
+                    <p class="text-info">
+                        Note: If you don't specify the name of the rabbit,
+                        then carrot will be sent to this fluffy animal: <span class="font-weight-bold">@Model.DefaultMessageQueueName</span>
+                    </p>
+                </div>
+                <div>
+                    @Html.TextBoxFor(m => m.MessageQueueName, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div>
+                    @Html.LabelFor(m => m.ExchangeName)
+                </div>
+                <div>
+                    @Html.TextBoxFor(m => m.ExchangeName, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div>
+                    @Html.LabelFor(m => m.JsonToSend)
+                    <p class="text-info">
+                        Use this site to convert your tasteless C# object into delicious JSON-based carrot - <a target="_blank" href="https://csharp2json.io/">csharp2json.io</a>.<br />
+                        Note: I recommend you to remove all constructors from your objects, otherwise that site might produce no or incorrect result.
+                    </p>
+                </div>
+                <div>
+                    @Html.TextAreaFor(m => m.JsonToSend, new { @class = "form-control", rows = 15 })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit">Send!</button>
+            </div>
+        }
+    }
+</div>

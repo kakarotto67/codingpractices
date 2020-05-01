@@ -1,0 +1,171 @@
+﻿@using System.Web.Optimization
+@using GCBL.CoreSite.Helpers
+
+<!Doctype html>
+<html>
+<head>
+    <title>Global Commercial Bank Ltd - @ViewBag.Title</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!-- Styles & Scripts -->
+    <!--[if lte IE 8]><script src="~/Scripts/ie/html5shiv.js"></script><![endif]-->
+    @Styles.Render("~/styles/main")
+    <!--[if lte IE 9]><link rel="stylesheet" href="~/Styles/ie9.css"/><![endif]-->
+    @Scripts.Render("~/scripts/jquerymin")
+    @Scripts.Render("~/scripts/skel")
+    @Scripts.Render("~/scripts/util")
+    <!--[if lte IE 8]><script src="~/Scripts/ie/respond.min.js"></script><![endif]-->
+    @Scripts.Render("~/scripts/main")
+
+</head>
+<body class="subpage">
+<div id="page-wrapper">
+
+    <!-- Header -->
+    <div id="header-wrapper">
+        <header id="header" class="container">
+            <div class="row">
+                <div class="12u">
+
+                    <!-- Logo -->
+                    <h1>
+                        @Html.ActionLink("Global Commercial Bank Ltd", "Index", "Home")
+                    </h1>
+
+                    <!-- Navigation -->
+                    <nav id="nav">
+                        <a href="#">Deposits & Loans</a>
+                        <a href="#">Individuals</a>
+                        <a href="#">Legal Entities</a>
+                        <a href="#">About the Bank</a>
+                    </nav>
+
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <!-- Content -->
+    <div id="content-wrapper">
+        <div id="content">
+            <div class="container">
+                <div class="row">
+                    <div class="9u 12u(mobile)">
+                        @{
+                            var userName = AuthHelper.GetAuthenticatedUserName(Context);
+                            if (!String.IsNullOrEmpty(userName))
+                            {
+                                <p>
+                                    Hi, @userName | @Html.ActionLink("Log out", "LogOut", "Account")
+                                </p>
+                            }
+                            else if (Context.Request.Url == null
+                                     || !Context.Request.Url.AbsolutePath.Contains("Account/Login"))
+                            {
+                                <p>
+                                    @Html.ActionLink("Log in", "Login", "Account")
+                                </p>
+                            }
+                        }
+
+                        <!-- Main Content -->
+                        @RenderBody()
+
+                    </div>
+                    <div class="3u 12u(mobile)">
+
+                        <!-- Quick Right Menu -->
+                        <section>
+                            <header>
+                                <h2>Quick Operations</h2>
+                            </header>
+                            <ul class="link-list">
+                                <li><a href="#">All Services</a></li>
+                                <li>@Html.ActionLink("Private Account", "AccountPage", "PrivateAccount")</li>
+                                <li><a href="#">Transfer Money</a></li>
+                                <li><a href="#">Payments</a></li>
+                                <li><a href="#">Currency Exchange</a></li>
+                                <li><a href="#">Other Operations</a></li>
+                            </ul>
+                        </section>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer-wrapper">
+        <footer id="footer" class="container">
+            <div class="row">
+                <div class="8u 12u(mobile)">
+
+                    <!-- Links -->
+                    <section>
+                        <h2>Important Links</h2>
+                        <div>
+                            <div class="row">
+                                <div class="3u 12u(mobile)">
+                                    <ul class="link-list last-child">
+                                        <li><a href="#">Reprofiling Archive</a></li>
+                                        <li><a href="#">Ownership structure</a></li>
+                                        <li><a href="#">Management boards</a></li>
+                                        <li><a href="#">Corporate governance</a></li>
+                                    </ul>
+                                </div>
+                                <div class="3u 12u(mobile)">
+                                    <ul class="link-list last-child">
+                                        <li><a href="#">IFRS financial statements</a></li>
+                                        <li><a href="#">Investor’s presentation</a></li>
+                                        <li><a href="#">Ratings</a></li>
+                                        <li><a href="#">International borrowings</a></li>
+                                    </ul>
+                                </div>
+                                <div class="3u 12u(mobile)">
+                                    <ul class="link-list last-child">
+                                        <li><a href="#">Depository services</a></li>
+                                        <li><a href="#">Equity account</a></li>
+                                        <li><a href="#">Securities brokerage</a></li>
+                                        <li><a href="#">SWIFT payments</a></li>
+                                    </ul>
+                                </div>
+                                <div class="3u 12u(mobile)">
+                                    <ul class="link-list last-child">
+                                        <li><a href="#">Investment services</a></li>
+                                        <li><a href="#">Investor relations</a></li>
+                                        <li><a href="#">Miscellaneous</a></li>
+                                        <li><a href="#">Contacts</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+                <div class="4u 12u(mobile)">
+
+                    <!-- Interesting Fact Section -->
+                    <section>
+                        <h2>Interesting Fact</h2>
+                        <p>
+                            Global Commercial Bank Ltd becomes a partner of the international programme
+                            to financially support displaced people from Middle East.
+                        </p>
+                    </section>
+
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Copyright -->
+    <div id="copyright">
+        &copy; 2016 Global Commercial Bank Ltd. All rights reserved.
+    </div>
+
+</div>
+
+</body>
+</html>

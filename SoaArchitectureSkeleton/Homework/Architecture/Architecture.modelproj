@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2dfa0478-b3ba-47aa-8bea-db73362dcfc3}</ProjectGuid>
+    <ArchitectureToolsVersion>2.0.0.0</ArchitectureToolsVersion>
+    <Name>Architecture</Name>
+    <RootNamespace>Architecture</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\ArchitectureTools\Microsoft.VisualStudio.TeamArchitect.ModelingProject.targets" Condition="'$(VSToolsPath)' != ''" />
+  <ItemGroup>
+    <Folder Include="ModelDefinition\" />
+    <Content Include="ModelDefinition\Architecture.uml">
+      <SubType>Content</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Validate Include="LayerDiagram.layerdiagram">
+      <SubType>Content</SubType>
+    </Validate>
+    <Validate Include="LayerDiagram.layerdiagram.layout">
+      <SubType>Content</SubType>
+      <DependentUpon>LayerDiagram.layerdiagram</DependentUpon>
+    </Validate>
+    <Validate Include="LayerDiagram.layerdiagram.suppressions">
+      <SubType>Content</SubType>
+      <DependentUpon>LayerDiagram.layerdiagram</DependentUpon>
+    </Validate>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HomeWork.TL.CoreSite\HomeWork.TL.CoreSite.csproj">
+      <Name>HomeWork.TL.CoreSite</Name>
+      <Project>{7f593aa9-a17d-4525-89d0-d5785408a0b9}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\HomeWork.TL.Core\HomeWork.TL.Core.csproj">
+      <Name>HomeWork.TL.Core</Name>
+      <Project>{592d2225-911a-4765-8745-be3d865e6f08}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\HomeWork.TL.DAL.Internal\HomeWork.TL.DAL.Internal.csproj">
+      <Name>HomeWork.TL.DAL.Internal</Name>
+      <Project>{d40dee98-6dda-4458-985d-105b9eee231b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\HomeWork.TL.DAL.Shared\HomeWork.TL.DAL.Shared.csproj">
+      <Name>HomeWork.TL.DAL.Shared</Name>
+      <Project>{4dae8333-7a3a-4ea0-9246-93c499e675f3}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\HomeWork.TL.Infrastructure\HomeWork.TL.Infrastructure.csproj">
+      <Name>HomeWork.TL.Infrastructure</Name>
+      <Project>{f27bfed4-4141-4c7b-a608-1fcb0add4f2d}</Project>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,56 @@
+<h1>Snow & Weather Forecast</h1>
+
+<p>This component fetches forecast data from the external web service using API.</p>
+
+<div>
+  <p>Get forecast for location name:</p>
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" (keyup)="bindLocationNameFromUi($event)" placeholder="Enter location name, e.g., London">
+    <div class="input-group-append">
+      <button *ngIf="enableGetForecastByLocationNameBtn" class="btn btn-secondary" (click)="getForecastForLocationByName()">Get Forecast</button>
+      <button *ngIf="!enableGetForecastByLocationNameBtn" class="btn btn-secondary disabled" disabled>Get Forecast</button>
+    </div>
+  </div>
+</div>
+
+<br/>
+
+<div>
+  <p>Get forecast for location id:</p>
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" (keyup)="bindLocationIdFromUi($event)" placeholder="Enter location id, e.g., 2172797" />
+    <div class="input-group-append">
+      <button *ngIf="enableGetForecastByLocationIdBtn" class="btn btn-secondary" (click)="getForecastForLocationById()">Get Forecast</button>
+      <button *ngIf="!enableGetForecastByLocationIdBtn" class="btn btn-secondary disabled" disabled>Get Forecast</button>
+    </div>
+  </div>
+</div>
+
+<br />
+
+<div *ngIf="!showForecastDetails">No forecast found.</div>
+
+<table *ngIf="showForecastDetails" class='table table-striped'>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Location</th>
+      <th>Summary</th>
+      <th>Description</th>
+      <th>Temperature</th>
+      <th>Wind Speed</th>
+      <th>Clouds Level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Now</td>
+      <td>{{ forecastDetails.locationName }}</td>
+      <td>{{ forecastDetails.shortDesc }}</td>
+      <td>{{ forecastDetails.longDesc }}</td>
+      <td>{{ forecastDetails.temperature }} <span>°C</span></td>
+      <td>{{ forecastDetails.windSpeed }} <span>meter/sec</span></td>
+      <td>{{ forecastDetails.cloudsLevel }} <span>%</span></td>
+    </tr>
+  </tbody>
+</table>

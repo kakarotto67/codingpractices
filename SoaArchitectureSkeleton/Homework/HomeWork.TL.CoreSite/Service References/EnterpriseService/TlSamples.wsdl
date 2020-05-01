@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="https://TlSamples" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="https://TlSamples" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="https://TlSamples/Imports">
+      <xsd:import namespace="https://TlSamples" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/Enterprise.Service.Shared.Contracts.DataContracts" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IDataService_GetOrderById_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetOrderById" />
+  </wsdl:message>
+  <wsdl:message name="IDataService_GetOrderById_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetOrderByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDataService_GetOrderByIdDuplex_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetOrderByIdDuplex" />
+  </wsdl:message>
+  <wsdl:message name="IDataService_OrderResult_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:OrderResult" />
+  </wsdl:message>
+  <wsdl:portType msc:usingSession="true" name="IDataService">
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetOrderById">
+      <wsdl:input wsaw:Action="https://TlSamples/IDataService/GetOrderById" message="tns:IDataService_GetOrderById_InputMessage" />
+      <wsdl:output wsaw:Action="https://TlSamples/IDataService/GetOrderByIdResponse" message="tns:IDataService_GetOrderById_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetOrderByIdDuplex">
+      <wsdl:input wsaw:Action="https://TlSamples/IDataService/GetOrderByIdDuplex" message="tns:IDataService_GetOrderByIdDuplex_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="OrderResult">
+      <wsdl:output wsaw:Action="https://TlSamples/IDataService/OrderResult" message="tns:IDataService_OrderResult_OutputCallbackMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

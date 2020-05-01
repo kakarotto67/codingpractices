@@ -1,0 +1,43 @@
+﻿@model GCBL.CoreSite.Models.LoginModel
+
+@{
+    ViewBag.Title = "Login Page";
+}
+
+<h2>Login Page</h2>
+
+<section id="loginForm">
+    @using (Html.BeginForm("Login", "Account", new { ViewBag.ReturnUrl }, FormMethod.Post))
+    {
+        <h4>Use a local account to log in.</h4>
+        <br/>
+
+        @Html.ValidationSummary(true, "", new { @class = "textDanger" })
+
+        <div class="formGroup">
+            @Html.LabelFor(m => m.Name)
+            @Html.TextBoxFor(m => m.Name)
+            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "textDanger" })
+        </div>
+
+        <br/>
+
+        <div class="formGroup">
+            @Html.LabelFor(m => m.Password)
+            @Html.PasswordFor(m => m.Password)
+            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "textDanger", placeholder = "Password" })
+        </div>
+
+        <br/>
+
+        <div class="formGroup">
+            <input type="submit" value="Log in"/>
+        </div>
+
+        <br/>
+
+        <p>
+            @Html.ActionLink("Register as a new user", "Register", "Account")
+        </p>
+    }
+</section>

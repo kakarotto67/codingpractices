@@ -1,0 +1,12 @@
+version: "3.4"
+
+services:
+  webspa.client:
+    ports:
+      - "5301:4200"
+
+  bmt.microservices.snowforecastcenter:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5300:80"

@@ -1,0 +1,11 @@
+--- Carrot name:
+ShareClassesLoaded
+
+--- JSON:
+{ 
+   "ParentId":298,
+   "CorrelationId":"397461d6-6d26-4a8c-8b7b-a0b27979d9bc",
+   "CreatedDateUtc":"2019-11-04T16:23:03.1407149Z",
+   "Id":"361d7142-695f-419a-9e47-d87a22c247d0",
+   "Source":"Pwc.Apps.ShareClassRec.Business.Managers"
+}

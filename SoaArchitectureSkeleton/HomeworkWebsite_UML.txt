@@ -1,0 +1,40 @@
+title TL Homework Website
+skinparam componentStyle uml2
+
+node "Web Site" {
+note right of [Data Access Layer]
+Entity Framework (code
+first approach)
+end note
+
+note left of [ASP.NET MVC]
+ASP.NET-based core of the
+Web Site
+end note
+
+note right of [Infrastructure]
+Dependency Injection,
+Logging, Exception handling, etc.
+end note
+}
+
+database "Database Server" {
+note right of [Database]
+MS SQL Server 2012
+end note
+}
+
+node "IIS" {
+cloud "Web Service" {
+note top of [Web Service]
+WCF-based web service
+end note
+}
+}
+
+[ASP.NET MVC] --> [Data Access Layer]
+[ASP.NET MVC] ..> HTTPS : use
+HTTPS ..> [Web Service]
+[ASP.NET MVC] --> [Infrastructure]
+[Data Access Layer] --> [Database]
+[Data Access Layer] --> [Infrastructure]

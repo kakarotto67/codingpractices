@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<layerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/SimpleShapesModel" dslVersion="1.0.0.0" Id="97849586-a86a-47bb-be82-a55cd32f86a3" xmlns="http://schemas.microsoft.com/VisualStudio/TeamArchitect/LayerDesigner">
+  <comments>
+    <comment Id="ea29807f-bce5-4d1e-b12a-e28190822395" name="Comment1">
+      <body>Cross-cutting functionality (logging, error handling, etc.)</body>
+      <layerElements>
+        <linkFromCommentToLayerElement>
+          <layerMoniker Id="20458ccf-e88e-4206-8c9c-208ca5ee160f" />
+        </linkFromCommentToLayerElement>
+      </layerElements>
+    </comment>
+    <comment Id="2ab2494c-5e22-4c4a-b140-ec25cd6024b7" name="Comment2">
+      <body>Core functionality (shared interfaces, shared DI container, etc.)</body>
+      <layerElements>
+        <linkFromCommentToLayerElement>
+          <layerMoniker Id="ee7faa4f-43be-48d4-9a26-5d86cb1719b1" />
+        </linkFromCommentToLayerElement>
+      </layerElements>
+    </comment>
+  </comments>
+  <layers>
+    <layer Id="43ab53bb-18cb-40eb-92a5-f4a8978db66d" name="Presentation">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="b92bc963-7530-4571-9d48-34b9aa98cfac" direction="Forward">
+          <layerMoniker Id="ee7faa4f-43be-48d4-9a26-5d86cb1719b1" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+      <references>
+        <reference Id="37d33bfd-88e0-445a-89ad-2f34ce673449" name="HomeWork.TL.CoreSite">
+          <ArtifactNode Label="HomeWork.TL.CoreSite" Category="CodeSchema_Project" Id="(Assembly=../HomeWork.TL.CoreSite/HomeWork.TL.CoreSite.csproj)">
+            <Category Ref="File" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=HomeWork.TL.CoreSite)" Label="HomeWork.TL.CoreSite.dll" Category="CodeSchema_Assembly">
+            <Category Ref="FileSystem.Category.FileOfType.dll" />
+            <LinkCategory Ref="Produces" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="4767c98e-599c-4cbd-988f-21251796aa2b" name="DAL">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="6a80a5a4-0531-4923-8fa8-60c15dde4e25" direction="Forward">
+          <layerMoniker Id="ee7faa4f-43be-48d4-9a26-5d86cb1719b1" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+      <references>
+        <reference Id="87aeefdf-3cca-4f51-845f-208b480afc10" name="HomeWork.TL.DAL.Internal">
+          <ArtifactNode Label="HomeWork.TL.DAL.Internal" Category="CodeSchema_Project" Id="(Assembly=../HomeWork.TL.DAL.Internal/HomeWork.TL.DAL.Internal.csproj)">
+            <Category Ref="File" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=HomeWork.TL.DAL.Internal)" Label="HomeWork.TL.DAL.Internal.dll" Category="CodeSchema_Assembly">
+            <Category Ref="FileSystem.Category.FileOfType.dll" />
+            <LinkCategory Ref="Produces" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+        <reference Id="aebf8350-e309-4c5d-a576-1674e7edc396" name="HomeWork.TL.DAL.Shared">
+          <ArtifactNode Label="HomeWork.TL.DAL.Shared" Category="CodeSchema_Project" Id="(Assembly=../HomeWork.TL.DAL.Shared/HomeWork.TL.DAL.Shared.csproj)">
+            <Category Ref="File" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=HomeWork.TL.DAL.Shared)" Label="HomeWork.TL.DAL.Shared.dll" Category="CodeSchema_Assembly">
+            <Category Ref="FileSystem.Category.FileOfType.dll" />
+            <LinkCategory Ref="Produces" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="ee7faa4f-43be-48d4-9a26-5d86cb1719b1" name="Core">
+      <references>
+        <reference Id="85192808-81f1-4545-9a19-2cbe49e16cdd" name="HomeWork.TL.Core">
+          <ArtifactNode Label="HomeWork.TL.Core" Category="CodeSchema_Project" Id="(Assembly=../HomeWork.TL.Core/HomeWork.TL.Core.csproj)">
+            <Category Ref="File" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=HomeWork.TL.Core)" Label="HomeWork.TL.Core.dll" Category="CodeSchema_Assembly">
+            <Category Ref="FileSystem.Category.FileOfType.dll" />
+            <LinkCategory Ref="Produces" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="20458ccf-e88e-4206-8c9c-208ca5ee160f" name="Infrastructure">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="bbdd211a-9d31-47b2-bc78-423192dc9f98" direction="Forward">
+          <layerMoniker Id="ee7faa4f-43be-48d4-9a26-5d86cb1719b1" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+      <references>
+        <reference Id="8aa4a551-1db9-4ceb-8ce9-5be95e0dc85d" name="HomeWork.TL.Infrastructure">
+          <ArtifactNode Label="HomeWork.TL.Infrastructure" Category="CodeSchema_Project" Id="(Assembly=../HomeWork.TL.Infrastructure/HomeWork.TL.Infrastructure.csproj)">
+            <Category Ref="File" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=HomeWork.TL.Infrastructure)" Label="HomeWork.TL.Infrastructure.dll" Category="CodeSchema_Assembly">
+            <Category Ref="FileSystem.Category.FileOfType.dll" />
+            <LinkCategory Ref="Produces" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+  </layers>
+</layerModel>

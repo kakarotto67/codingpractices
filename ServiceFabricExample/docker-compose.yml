@@ -1,0 +1,20 @@
+version: "3.4"
+
+services:
+  webspa.client:
+    image: ${DOCKER_REGISTRY-}webspaclient:dev
+    build:
+      context: .
+      dockerfile: src/WebSpa/Dockerfile
+    # For Linux
+    # volumes:
+    #   - '.:/app'
+    #   - '/app/src/WebSpa/node_modules'
+    depends_on:
+      - bmt.microservices.snowforecastcenter
+
+  bmt.microservices.snowforecastcenter:
+    image: ${DOCKER_REGISTRY-}snowforecast:dev
+    build:
+      context: .
+      dockerfile: src/Services/Bmt.Microservices.SnowForecastCenter/Dockerfile
